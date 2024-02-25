@@ -1,5 +1,5 @@
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { fetchIds, fetchProducts } from './ProductActions';
 
 const initialState = {
@@ -7,12 +7,21 @@ const initialState = {
   products: [],
   status: 'idle',
   error: null,
+  searchItem:'',
+  // currentProducts:[]
 };
 
 const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchItem:(state,action) => {
+      state.searchItem = action.payload;
+    },
+    // setCurrentProducts:(state,action) => {
+    //   state.currentProducts = action.payload;
+    // }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIds.pending, (state) => {
@@ -39,5 +48,21 @@ const productsSlice = createSlice({
       });
   },
 });
+
+export const {setSearchItem} = productsSlice.actions;
+
+// Selector to filter products based on searchTerm
+export const selectFilteredProducts = createSelector(
+  state => state.products.products,
+  state => state.products.searchItem,
+  (products, searchItem) => {
+    return products.filter(product =>
+      Object.values(product).some(value =>
+          typeof value === 'string' && value.toLowerCase().includes(searchItem.toLowerCase()) ||
+          typeof value === 'number' && value.toString().includes(searchItem)
+      )
+    );
+  }
+);
 
 export default productsSlice.reducer;

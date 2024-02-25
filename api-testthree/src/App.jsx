@@ -10,7 +10,6 @@ function App() {
     <div>
       <h1 className='text-3xl font-bold text-green-600'>Salam</h1>
       <Provider store={store}>
-        {/* <Pagination/> */}
         <ProductList/>
       </Provider>
 

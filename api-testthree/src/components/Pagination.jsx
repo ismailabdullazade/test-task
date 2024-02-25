@@ -1,44 +1,70 @@
+// import { useState } from "react";
+// import { useSelector } from "react-redux";
+// import { selectFilteredProducts } from "../redux/ProductSlice";
 
+// const Pagination = () => {
 
-// const ProductList = ({ products }) => {
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const productsPerPage = 50;
-//   const totalPages = Math.ceil(products.length / productsPerPage);
+//     const products = useSelector(selectFilteredProducts);
 
-//   // Change page
-//   const goToPage = (pageNumber) => {
+//     const [currentPage, setCurrentPage] = useState(1);
+//     const productsPerPage = 5;
+//     const totalPages = Math.ceil(products.length / productsPerPage);
+  
+//     // Change page
+//     const goToPage = (pageNumber) => {
 //     setCurrentPage(pageNumber);
-//   };
+//     };
+  
+//     // Calculate indexes for displaying products on the current page
+//     const indexOfLastProduct = currentPage * productsPerPage;
+//     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+//     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  
+//       // Generate array of page numbers
+//       let pageNumbers = [];
+  
+//       if (totalPages <= 9) {
+//         pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+//       } else {
+//         const leftSide = currentPage - 2;
+//         const rightSide = currentPage + 2;
+//         const firstPage = 1;
+//         const lastPage = totalPages;
+    
+//         if (currentPage <= 4) {
+//           pageNumbers = [...Array(5).keys()].map(i => i + 1);
+//           pageNumbers.push('...');
+//           pageNumbers.push(lastPage);
+//         } else if (currentPage >= totalPages - 3) {
+//           pageNumbers.push(firstPage);
+//           pageNumbers.push('...');
+//           pageNumbers = [...Array(5).keys()].map(i => totalPages - 4 + i);
+//         } else {
+//           pageNumbers.push(firstPage);
+//           pageNumbers.push('...');
+//           for (let i = leftSide; i <= rightSide; i++) {
+//             pageNumbers.push(i);
+//           }
+//           pageNumbers.push('...');
+//           pageNumbers.push(lastPage);
+//         }
+//       }
+  
 
-//   // Calculate indexes for displaying products on the current page
-//   const indexOfLastProduct = currentPage * productsPerPage;
-//   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-//   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-
-//   // Generate array of page numbers
-//   const pageNumbers = [];
-//   for (let i = 1; i <= totalPages; i++) {
-//     pageNumbers.push(i);
-//   }
 
 //   return (
 //     <div>
-//       <ul>
-//         {currentProducts.map(product => (
-//           <li key={product.id}>
-//             {product.name} - ${product.price}
-//           </li>
+//       <div className='flex justify-center gap-3'>
+//         <button
+//         className='px-2 hover:bg-gray-100 rounded-sm text-lg'
+//         onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
+//         {pageNumbers.map((number, index) => (
+//           <button className={number === currentPage ? 'px-2 bg-gray-100 rounded-sm text-lg':'px-2 hover:bg-gray-100 rounded-sm text-lg'} key={index} onClick={() => number !== '...' && goToPage(number)}>{number}</button>
 //         ))}
-//       </ul>
-//       <div>
-//         <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
-//         {pageNumbers.map(number => (
-//           <button key={number} onClick={() => goToPage(number)}>{number}</button>
-//         ))}
-//         <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+//         <button className='px-2 hover:bg-gray-100 rounded-sm text-lg' onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
 //       </div>
 //     </div>
-//   );
-// };
+//   )
+// }
 
-// export default ProductList;
+// export default Pagination

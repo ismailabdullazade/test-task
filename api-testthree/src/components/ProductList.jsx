@@ -4,21 +4,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchIds } from '../redux/ProductActions.js';
 import { fetchProducts } from '../redux/ProductActions.js';
 import ProductCard from './ProductCard.jsx';
+import { selectFilteredProducts } from '../redux/ProductSlice.js';
+import SearchBar from './SearchBar.jsx';
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const ids = useSelector(state => state.products.ids);
-  const products = useSelector(state => state.products.products);
+
+  const products = useSelector(selectFilteredProducts);
+  // const searchItem = useSelector(state=>state.products.searchItem)
+
+
   const status = useSelector(state => state.products.status);
   const error = useSelector(state => state.products.error);
 
-  console.log(products.length +"Product Length");
+  console.log(products);
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 5;
   const totalPages = Math.ceil(products.length / productsPerPage);
 
-  // console.log("Total Pages" + totalPages);
+  // const handleChange = (e) => {
+  //   dispatch(setSearchItem(e.target.value))
+  // }
 
     // Change page
     const goToPage = (pageNumber) => {
@@ -83,7 +91,7 @@ const ProductList = () => {
   return (
     <div>
       <h2>Product List</h2>
-
+      <SearchBar/>
       <div className='flex justify-center gap-3'>
         <button
         className='px-2 hover:bg-gray-100 rounded-sm text-lg'
