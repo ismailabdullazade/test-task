@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchIds } from '../redux/ProductActions.js';
+import { fetchIds, filterProducts } from '../redux/ProductActions.js';
 import { fetchProducts } from '../redux/ProductActions.js';
 import ProductCard from './ProductCard.jsx';
 import { selectFilteredProducts } from '../redux/ProductSlice.js';
@@ -12,21 +12,15 @@ const ProductList = () => {
   const ids = useSelector(state => state.products.ids);
 
   const products = useSelector(selectFilteredProducts);
-  // const searchItem = useSelector(state=>state.products.searchItem)
-
 
   const status = useSelector(state => state.products.status);
   const error = useSelector(state => state.products.error);
 
-  console.log(products);
+  // console.log(products);
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 5;
   const totalPages = Math.ceil(products.length / productsPerPage);
-
-  // const handleChange = (e) => {
-  //   dispatch(setSearchItem(e.target.value))
-  // }
 
     // Change page
     const goToPage = (pageNumber) => {
@@ -80,6 +74,16 @@ const ProductList = () => {
     }
   }, [dispatch, ids]);
 
+  const searchItem = "Золотое";
+
+  useEffect(() => {
+    console.log("3cu useffect");
+    if (searchItem.length > 0) {
+      console.log("3500 icine");
+      dispatch(filterProducts(searchItem));
+    }
+  }, [dispatch,searchItem]);
+
   if (status === 'loading') {
     return <div>Loading...</div>;
   }
@@ -104,8 +108,8 @@ const ProductList = () => {
 
       
       <div className='flex justify-evenly flex-wrap p-2'>
-        {currentProducts.map((product,i) => (
-          <ProductCard key={i} product={product} />
+        {currentProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>

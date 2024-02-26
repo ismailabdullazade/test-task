@@ -1,6 +1,6 @@
 
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { fetchIds, fetchProducts } from './ProductActions';
+import { fetchIds, fetchProducts, filterProducts } from './ProductActions';
 
 const initialState = {
   ids: [],
@@ -8,7 +8,6 @@ const initialState = {
   status: 'idle',
   error: null,
   searchItem:'',
-  // currentProducts:[]
 };
 
 const productsSlice = createSlice({
@@ -18,9 +17,7 @@ const productsSlice = createSlice({
     setSearchItem:(state,action) => {
       state.searchItem = action.payload;
     },
-    // setCurrentProducts:(state,action) => {
-    //   state.currentProducts = action.payload;
-    // }
+
   },
   extraReducers: (builder) => {
     builder
@@ -43,6 +40,17 @@ const productsSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(filterProducts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(filterProducts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.ids = action.payload;
+      })
+      .addCase(filterProducts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });
